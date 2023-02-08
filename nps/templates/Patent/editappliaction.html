@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <title>Edit Application</title>
+    <link rel="shortcut icon" type="image" href="img/logo.png"/>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="users.css">
+    <link rel="stylesheet" href="formtype2.css">
+    <link rel="stylesheet" href="rbox2.css">
+    <link href='https://fonts.googleapis.com/css?family=Solway' rel='stylesheet'>
+</head>
+<style>
+input[type=text], select ,input[type = date]{
+    width: 50%;
+    padding: 12px 15px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-color: #1694d8;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .but2 {
+    background-color: #1694d8;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+</style>
+<body>
+{% include 'navigation/topnavbar.html' %}
+<br>
+<br>
+  <center> <h2 style ="color:rgb(38, 157, 212);">Application No:  {{app.uid }}</h2> </center>
+<center>
+    <!------ Details------>
+   <div class="container">
+       <br>
+       <br>
+    <button style ="color:rgb(255, 255, 255) " class="but2">Details</button>
+    <br>
+       <h2 style ="color:rgb(38, 157, 212) ">Type:</h2>
+        <label for="fname"></label>
+        <input type="text" id="fname"  value="{{app.patenttype}}" disabled placeholder="Type"><br>
+       <h2 style ="color:rgb(38, 157, 212) ">Title :</h2>
+        <label for="lname"></label>
+        <input type="text" id="lname" name="lname" placeholder=" Title" disabled value="{{app.title}}"><br>
+       <h2 style ="color:rgb(38, 157, 212) "> organization :</h2>
+        <input type="text" id="fname" name="" value="{{app.organisation}}" disabled placeholder="Organization"><br>
+  <br>
+  <br>
+   </div>
+    <!-- end details -->
+</center>
+<hr>
+<br>
+<br>
+<center>
+    <!-- NDA  -->
+
+    <div class="container2">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">NDA</button>
+        {% if  ndastatus.status %}
+        <h2 style="color:green;">{{ndastatus.nda}}</h2>
+        <form action="{% url 'ndastatus' %}" method="post">
+              {% csrf_token %}
+            <input name="uid" value="{{app.uid}}" hidden>
+              <h3>NDA Status</h3>
+            <select id="ndastatus" name="status">
+            <option value="Status" hidden>Select status</option>
+            <option value="Signed NDA Sent">Signed NDA Sent</option>
+            <option value="Signed copy received (Both)">Signed copy received (Both)</option>
+            <option value="Existing client">Existing client</option>
+            <option value="MoU signed institute/entity)">MoU signed institute/entity</option>
+          </select>
+
+            <button style ="color:rgb(255, 255, 255) " class="but2" type="submit">Submit</button>
+          </form>
+        {% else %}
+        <form action="{% url 'ndastatus' %}" method="post">
+              {% csrf_token %}
+            <input name="uid" value="{{app.uid}}" hidden>
+              <h3>NDA Status</h3>
+            <select id="ndastatus" name="status">
+            <option value="Status" hidden>Select status</option>
+            <option value="Signed NDA Sent">Signed NDA Sent</option>
+            <option value="Signed copy received (Both)">Signed copy received (Both)</option>
+            <option value="Existing client">Existing client</option>
+            <option value="MoU signed institute/entity)">MoU signed institute/entity</option>
+          </select>
+
+            <button style ="color:rgb(255, 255, 255) " class="but2" type="submit">Submit</button>
+          </form>
+        {% endif %}
+    </div>
+</center>
+<hr>
+<br>
+<br>
+<!-- end NDA -->
+<!-- novelty  -->
+<center>
+      {% if app.patenttype == 'full' or app.patenttype == 'novelty search'  %}
+
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">Patentablity Search</button>
+         {% if NoveltyStatus.status %}
+        <h2 style="color:green;">Novelty Completed</h2>
+        {% else %}
+        <form action="{% url 'NoveltyStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Novelty Completed</button>
+      </form></div><hr>
+
+
+    {% endif %}
+      {% endif %}
+    <!-- end novelty  -->
+</center>
+<br>
+
+<br>
+<center>
+    <!-- drafting  -->
+    {% if app.patenttype == 'full' or app.patenttype == 'drafting' %}
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">Drafting</button>
+     {% if DraftingStatus.status %}
+        <h2 style="color:green;">Drafting Completed</h2>
+        {% else %}
+        <form action="{% url 'DraftingStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Drafting Completed</button>
+      </form></div><hr>
+    <!--<br>
+         <h3 style="color:green;">Drafting completed</h3>
+
+        <h3 style="color:red;">Drafting not Completed</h3>
+    </div><hr>-->
+    {% endif %}
+        {% endif %}
+<!-- end drafting -->
+</center>
+
+<br>
+<br>
+<center>
+    <!-- drawing -->
+    {% if app.patenttype == 'full' or app.patenttype == 'drawing' %}
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">Drawing</button>
+     {% if DrawingStatus.status %}
+        <h2 style="color:green;">Drawing Completed</h2>
+        {% else %}
+        <form action="{% url 'DrawingStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Drawing Completed</button>
+      </form></div><hr>
+    <!--<br>
+        <h3 style="color:green;">Drawing completed</h3>
+
+        <h3 style="color:red;">Drawing not Completed</h3><hr>-->
+       {% endif %}
+    {% endif %}
+    </div>
+    <!-- end drawing  -->
+</center>
+<br>
+
+<br>
+<center>
+    <!-- documentation -->
+    {% if app.patenttype == 'full' or app.patenttype == 'documentation' %}
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">Documentation</button>
+     {% if DocumentationStatus.status %}
+        <h2 style="color:green;">Documentation Completed</h2>
+        {% else %}
+        <form action="{% url 'DocumentationStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Documentation Completed</button>
+      </form></div><hr>
+    <!--<br ><h3 style="color:green;">Documentation completed</h3>
+
+        <h3 style="color:red;">Documentation not Completed</h3>
+          <hr>-->
+        {% endif %}
+        {% endif %}
+
+    </div>
+    <!-- end documentation -->
+</center>
+<br>
+
+<br>
+<center>
+    <!-- filing -->
+    {% if app.patenttype == 'full' or app.patenttype == 'filing' %}
+    <div class="container">
+        <br>
+        <br>
+        <button style ="color:rgb(255, 255, 255) " class="but2">Filing</button><br>
+        {% if  FilingStatus.status %}
+        <h2 style="color:green;">Filed</h2>
+        {% else %}
+      <form action="{% url 'FilingStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Filed</button>
+      </form></div><hr>
+    {% endif %}
+    {% endif %}
+</center>
+<br>
+
+<br>
+<center>
+    <!-- examination  -->
+    {% if app.patenttype == 'full' or app.patenttype == 'examination' %}
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">Examination</button>
+        {% if ExaminationStatus.status %}
+        <h2 style="color:green;">Examination Completed</h2>
+        {% else %}
+        <form action="{% url 'ExaminationStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Examination Completed</button>
+      </form></div><hr>
+        <!-- <form>
+            <h2 style ="color:rgb(38, 157, 212) ">
+            <label for="fname"></label>
+            <input type="date" id="fname" name="" placeholder="Examination Date"><br> </h2>
+            <h2 style ="color:rgb(38, 157, 212) ">
+            </h2>
+            <button  style ="color:rgb(255, 255, 255);background-color:green; " class="but2">Submit</button>
+         </form></div><hr>-->
+    {% endif %}
+    {% endif %}
+</center>
+<br>
+
+<br>
+<center>
+    <!-- FER  -->
+    {% if app.patenttype == 'full' or app.patenttype == 'FER' %}
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">FER</button>
+    {% if FerStatus.status %}
+        <h2 style="color:green;">Fer Completed</h2>
+        {% else %}
+        <form action="{% url 'FerStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Fer Completed</button>
+      </form></div><hr>
+    <!-- <form>
+        <h2 style ="color:rgb(38, 157, 212) ">
+        <label for="fname"></label>
+        <input type="date" id="fname" name="" placeholder="FER Date"><br> </h2>
+        <h2 style ="color:rgb(38, 157, 212) ">
+        </h2>
+        </form>
+       <br>
+        <button  style ="color:rgb(255, 255, 255);background-color:green; " class="but2">Submit</button>
+    </div><hr>-->
+    {% endif %}
+    {% endif %}
+</center>
+<br>
+
+<br>
+<center>
+    <!-- hearing  -->
+    {% if app.patenttype == 'full' or app.patenttype == 'hearing' %}
+    <div class="container">
+        <br>
+        <br>
+     <button style ="color:rgb(255, 255, 255) " class="but2">Hearing</button>
+    {% if HearingStatus.status %}<br>
+        <input type="date" value="{{HearingStatus.date}}"   disabled>
+        <h2 style="color:green;">Hearing Completed</h2>
+        {% else %}
+        <form action="{% url 'HearingStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden><br>
+          <input name="date" type="date">
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Hearing Completed</button>
+      </form></div><hr>
+     <!--<form>
+         <h2 style ="color:rgb(38, 157, 212) "></h2>
+        <label for="fname"></label>
+        <input type="date" id="fname" name="" placeholder="Hearing Date"><br> </h2>
+         <h2 style ="color:rgb(38, 157, 212) "></h2>
+        </form>
+        <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" >Submit</button>
+    </div>
+<hr>-->
+    {% endif %}
+    {% endif %}
+</center>
+<br>
+<br>
+
+
+<center>
+    <!--  payment -->
+    <div class="container">
+     <button style ="color:rgb(255, 255, 255) " class="but2">Payment status</button>
+     <br>
+     <br>
+     {% if PaymentStatus.status %}
+        <h3 style="color:green;">Payment Recieved</h3>
+        {% else %}
+        <h3 style="color:red;">Payment not recieved</h3>
+         <form action="{% url 'PaymentStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+          <input name="amount" type="number" >
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Payment Recieved</button>
+      </form><hr>
+        {% endif %}
+    </div>
+</center>
+<br>
+
+<br>
+<center>
+    <!-- grants -->
+    <div class="container2">
+                {% if app.patenttype == 'full' %}
+        <button style ="color:rgb(255, 255, 255) " class="but2">Grant</button>
+         {% if GrantStatus.status %}
+        <h2 style="color:green;">Grant Completed</h2>
+        {% else %}
+        <form action="{% url 'GrantStatus' %}" method="post">
+          {% csrf_token %}
+          <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Grant Completed</button>
+      </form></div><hr>
+     <!--<form action="#">
+          
+          <h3 style ="color:rgb(38, 157, 212) "> Grant :<input type="radio" id="test1" name="radio-group" checked>
+          <label for="test1"> Granted</label>
+          
+          <input type="radio" id="test2" name="radio-group">
+          <label for="test2">Rejected</label> </h3>
+
+         <button  style ="color:rgb(255, 255, 255);background-color:green; " class="but2" type="submit">Submit</button>
+        
+      </form>-->
+        {% endif %}
+    {% endif %}
+
+    </div>
+</center>
+{% if app.status %}
+<form action="{% url 'openapplication' %}" method="post">
+    {% csrf_token %}
+    <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="float:right; color:rgb(255, 255, 255); background-color:green;" class="but2" type="submit">Open Application</button>
+</form>
+{% else %}
+<form action="{% url 'closeapplication' %}" method="post">
+    {% csrf_token %}
+    <input name="uid" value="{{app.uid}}" hidden>
+         <button  style ="float:right; color:rgb(255, 255, 255); background-color:red;" class="but2" type="submit">Close Application</button>
+</form>
+{% endif %}
+</body>
+</html> 

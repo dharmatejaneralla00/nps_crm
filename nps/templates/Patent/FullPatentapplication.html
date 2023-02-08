@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+  .button {
+    background-color: #1694d8;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  .top li {
+    display: inline-block;
+    font-size: 20px;
+    padding: 20px;
+  }  
+  input[type=text],input[type=date], select {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-color: #1694d8;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+</style>
+{% include 'navigation/topnavbar.html' %}
+<body>
+   <ul class="top">
+        <li><button class="button">New Application</button></li>
+        <li style="color:#1694d8; margin-left:400px;font-weight: bolder;">FULL PATENT APPLICATION</li>
+    </ul><br>
+    <center><div >
+        <form action="fullpatentapplication" method="post">
+                        {% csrf_token %}
+
+          <input type="date" id="fname" name="date" placeholder="Date">
+          <input type="text" id="fname" name="title" placeholder="Title"><br>
+          <input type="text" id="fname" name="organization" placeholder="Organization"><br>
+          <select id="mode of contact" name="modeofcontact">
+            <option value="mode of contact" hidden>mode of contact</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+          </select>
+          <select id="Refered By" name="referedby">
+            <option value="Refered By" hidden>Refered by</option>
+              {% for i in ref %}
+              <option value="{{i}}">{{i}}</option>
+              {% endfor %}
+
+          </select>
+          <input type="text" id="fname" name="contactnumber" placeholder="Contact Number"><br>
+          <input type="text" id="fname" name="emailid" placeholder="email id"><br>
+
+            <button class="button" type="submit">Submit</button></form></div>
+</body>
+</html>

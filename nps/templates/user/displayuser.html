@@ -76,17 +76,17 @@
   ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     overflow: hidden;
     background-color: white;
   }
 
   li {
-    float: right;
+    float: left;
   }
 
   li a {
-    display: block;
+    display: inline;
     color: #0d9bd3;
     text-align: center;
     padding: 14px 16px;
@@ -106,16 +106,23 @@
   padding-right:200px;
   margin-top:0px;
   }
+.tbc
+{
+border: 1px solid black;
+}
 </style>
 </head>
 <body>
 <!--user button-->
-<center>
 
-    <a  class="button buttonsub1" style="position: absolute; left: 200px; ;">USERS</a>
-    <a class="button buttonsub1" href="register" style="position: absolute; left: 400px; " >Create New User</a>
-    <a class="button buttonsub1" href="referedby" style="position: absolute; right: 600px; "  > Refered By </a>
-    <a class="button buttonsub1" href="team" style="position: absolute; right:800px;"> Team Names </a>
+
+ <a  class="button buttonsub1" style="margin:20px;margin-top:20px;margin-left:60px;">USERS</a>
+<ul style = "float:right;	">
+<li>   <a class="button buttonsub1" href="register" >Create New User</a></li>
+<li><a class="button buttonsub1" href="referedby"  > Refered By </a></li>
+<li>   <a class="button buttonsub1" href="team" > Team Names </a></li>
+</ul>
+<center>
 <!-- table -->
     <br>
     <br>
@@ -127,7 +134,7 @@
 <th style="color: rgb(30, 202, 245);">Name</th>
 <th style="color: rgb(30, 202, 245);">Team</th>
 <th style="color: rgb(30, 202, 245);">Username</th>
-<th style="color: rgb(30, 202, 245);">Contact Number</th>
+<th style="color: rgb(30, 202, 245);">Reset password</th>
 </tr>
 {% for i in user %}
 <tr>
